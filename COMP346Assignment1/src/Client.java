@@ -160,9 +160,8 @@ public class Client extends Thread
 		while (i < getNumberOfTransactions())
 		{
 			 while( objNetwork.getInBufferStatus().equals("full") ) /* Alternatively, busy-wait until the network input buffer is available */
-			 {
-				 Thread.yield();
-			 }
+				 this.yield();
+
 			transaction[i].setTransactionStatus("sent"); /* Set current transaction status */
 
 			System.out.println("\n DEBUG : Client.sendTransactions() - sending transaction on account "
@@ -224,17 +223,22 @@ public class Client extends Thread
 		Transactions transact = new Transactions();
 		long sendClientStartTime, sendClientEndTime, receiveClientStartTime, receiveClientEndTime;
 
-		if (clientOperation.equals("sending"))
-		{
+		/* Implement the code for the run method */
+		sendClientStartTime = System.currentTimeMillis();
+		receiveClientStartTime = System.currentTimeMillis();
+		if (clientOperation.equals("sending")) {
 			// this.readTransactions();
 			System.out.println("\n DEBUG : Client.run() - starting client sending thread connected");
 			this.sendTransactions();
-		} else if (clientOperation.equals("receiving"))
-		{
-			System.out.println("\n DEBUG : Client.run() - starting client receiving thread connected");
+			sendClientEndTime = System.currentTimeMillis();
+			System.out.println("\n Terminating client sending thread  -  Running time " + (sendClientEndTime - sendClientStartTime) + " milliseconds");
+
+		} else if (clientOperation.equals("receiving")) {
+			 System.out.println("\n DEBUG : Client.run() - starting client receiving thread connected");
 			 this.receiveTransactions(transact);
-			 objNetwork.setClientConnectionStatus("disconnected");
+			 receiveClientEndTime = System.currentTimeMillis();
+			 System.out.println("\n Terminating client receiving thread  -  Running time " + (receiveClientEndTime - receiveClientStartTime) + " milliseconds");
 		}
-		/* Implement the code for the run method */
+		objNetwork.setClientConnectionStatus("disconnected");
 	}
 }
