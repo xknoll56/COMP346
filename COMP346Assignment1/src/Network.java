@@ -553,8 +553,17 @@ public class Network extends Thread{
     public void run()
     {	
     	System.out.println("\n DEBUG : Network.run() - starting network thread");
-    	while (!clientConnectionStatus.equals("disconnected") && !serverConnectionStatus.equals("disconnected"))
+    	connect(getServerIP());
+    	connect(getClientIP());
+
+    	while (!getClientConnectionStatus().equals("disconnected") && !getServerConnectionStatus().equals("disconnected"))
     		this.yield();
-    	System.out.println("\n Finished transfer correctly");
+
+    	disconnect(getClientIP());
+    	disconnect(getServerIP()); // if we do that, we don't get to the end of the server's run() method....
+
+        System.out.println("\n Terminating network thread  -  Client "
+                + getClientConnectionStatus() + " Server " + getServerConnectionStatus());
+        setNetworkStatus("inactive");
     }
 }
