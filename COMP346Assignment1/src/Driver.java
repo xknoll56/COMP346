@@ -17,11 +17,7 @@ public class Driver {
      * @throws InterruptedException 
      */
     public static void main(String[] args) throws InterruptedException {
-    	
-    	 /*******************************************************************************************************************************************
-    	  * TODO : implement all the operations of main class   																					*
-    	  ******************************************************************************************************************************************/
-        
+
     	Network objNetwork = new Network("network");            /* Activate the network */
         objNetwork.start();
         Server objServer = new Server();                                /* Start the server */
@@ -31,16 +27,9 @@ public class Driver {
         Client objClient2 = new Client("receiving");            /* Start the receiving client */
         objClient2.start();
 
-//        objNetwork.join();
-//        objServer.join();
-//        objClient1.join();
-//        objClient2.join();
-
         objClient1.join();
         objClient2.join();
         objServer.join();
         objNetwork.join();
-
-
     }
 }
